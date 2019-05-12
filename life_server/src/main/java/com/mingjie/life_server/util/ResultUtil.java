@@ -19,6 +19,13 @@ public class ResultUtil {
         return commonResult(ResultEnum.REQUEST_ERROR.getCode(), errorMsg, null);
     }
 
+    public static BaseResult successPageList(Object content, Integer totalPages) {
+        PageList pageList = new PageList();
+        pageList.setContent(content);
+        pageList.setTotalPages(totalPages);
+        return commonResult(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getMsg(), pageList);
+    }
+
     private static BaseResult commonResult(Integer code, String msg, Object data) {
         BaseResult<Object> result = new BaseResult<>();
         result.setCode(code);

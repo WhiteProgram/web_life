@@ -24,16 +24,16 @@ public class Order {
     @Column(columnDefinition = "int(10) default 0 COMMENT '创建时间'")
     private Integer createdTime;
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", count=" + count +
-                ", username='" + username + '\'' +
-                ", createdTime=" + createdTime +
-                '}';
+    @ApiModelProperty(hidden = true)
+    @Column(columnDefinition = "int(1) default 1 COMMENT '逻辑状态，1为正常，0为删除'")
+    private Integer status;
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Integer getCreatedTime() {
