@@ -1,0 +1,16 @@
+#mysql conf
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/life?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT
+    username: root
+    password: root
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: com.mingjie.life_server.config.MySQL5DialectUTF8
+  mvc:
+    static-path-pattern: /**
