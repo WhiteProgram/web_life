@@ -37,7 +37,6 @@
         <router-view/>
       </el-main>
    </el-container>
-    <el-footer>@2018</el-footer>
     </el-container>
   </div>
 </template>

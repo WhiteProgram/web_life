@@ -41,6 +41,7 @@ public class OrderController {
             order.setCreatedTime(Common.get_current());
             order.setStatus(1);
         }
+        System.out.println(order);
         orderService.save(order);
         return ResultUtil.success("修改成功");
     }

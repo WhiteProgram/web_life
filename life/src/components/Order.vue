@@ -3,7 +3,7 @@
     <div v-show="!sh">
       <el-col :span="6">
         <div style="float: left;margin-left: 6px;">
-          <el-button type="success" icon="el-icon-refresh-left" @click="list(1,pageSize)">刷新</el-button>
+          <el-button type="success" icon="el-icon-refresh-left" @click="list(currentPage,pageSize)">刷新</el-button>
           <el-button type="primary" plain @click="sh =true">添加</el-button>
         </div>
       </el-col>
@@ -57,14 +57,19 @@
           <el-input v-model="order.name" placeholder="请输入商品名称"></el-input>
         </el-col>
       </el-form-item>
-      <el-form-item label="单价">
+      <el-form-item label="总价">
         <el-col :span="6">
-          <el-input v-model="order.price" placeholder="请输入单价"></el-input>
+          <el-input v-model="order.price" placeholder="请输入总价"></el-input>
         </el-col>
       </el-form-item>
       <el-form-item label="数量">
         <el-col :span="6">
           <el-input v-model="order.count" placeholder="请输入数量"></el-input>
+        </el-col>
+      </el-form-item>
+      <el-form-item label="标签">
+        <el-col :span="6">
+          <el-input v-model="order.marks" placeholder="请输入标签"></el-input>
         </el-col>
       </el-form-item>
       <el-form-item label="消费者">
@@ -95,6 +100,10 @@
         <el-table-column
           prop="count"
           label="数量">
+        </el-table-column>
+        <el-table-column
+          prop="marks"
+          label="标签">
         </el-table-column>
         <el-table-column
           prop="price"
@@ -143,9 +152,13 @@
           id: '',
           name: '',
           price: '',
-          count: '',
+          count: '1',
+          marks: '',
+          status: 1,
+          createdTime: 1,
           username:'Meigen'
         },
+        currentPage:1,
         pageSize:10,
         totalPages:1,
         tableData: [
@@ -194,7 +207,9 @@
         this.order.id = ''
         this.order.name = ''
         this.order.price = ''
-        this.order.count = ''
+        this.order.count = '1',
+        this.order.marks = '',
+        this.order.status = '1',
         this.order.username = 'Meigen'
       },
       save(){
@@ -204,6 +219,9 @@
           name: this.order.name,
           price: this.order.price,
           count: this.order.count,
+          status: this.order.status,
+          marks: this.order.marks,
+          createdTime: this.order.createdTime,
           username: this.order.username
         })).then(res =>{
           this.initData()
@@ -212,7 +230,7 @@
             message: res.data.data,
             type: 'success'
           });
-          this.list(1,this.pageSize)
+          this.list(this.currentPage,this.pageSize)
         })
       },
       list(page,size){
@@ -229,6 +247,7 @@
         })
       },
       change(event){
+        this.currentPage = event;
         this.list(event,this.pageSize);
       },
 

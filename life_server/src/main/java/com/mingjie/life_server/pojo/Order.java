@@ -28,6 +28,32 @@ public class Order {
     @Column(columnDefinition = "int(1) default 1 COMMENT '逻辑状态，1为正常，0为删除'")
     private Integer status;
 
+    @ApiModelProperty(value = "标签")
+    @Column(columnDefinition = "varchar(255) default '' COMMENT '标签'")
+    private String marks;
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", count=" + count +
+                ", username='" + username + '\'' +
+                ", createdTime=" + createdTime +
+                ", status=" + status +
+                ", marks='" + marks + '\'' +
+                '}';
+    }
+
+    public String getMarks() {
+        return marks;
+    }
+
+    public void setMarks(String marks) {
+        this.marks = marks;
+    }
+
     public Integer getStatus() {
         return status;
     }
