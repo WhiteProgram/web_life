@@ -1,7 +1,7 @@
 package com.mingjie.life_server.controller.admin;
 
 import com.mingjie.life_server.QueryVo.PageVo;
-import com.mingjie.life_server.pojo.Order;
+import com.mingjie.life_server.pojo.Consumption;
 import com.mingjie.life_server.service.OrderService;
 import com.mingjie.life_server.util.BaseResult;
 import com.mingjie.life_server.util.Common;
@@ -18,30 +18,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Api(description = "订单管理模块")
 @RestController
 @RequestMapping("/admin/order")
-public class OrderController {
+public class ConsumptionController {
     @Autowired
     private OrderService orderService;
 
     @ApiOperation("获取订单列表")
     @GetMapping("")
     public BaseResult list(PageVo pageVo){
-        Page<Order> orders = orderService.findAll(pageVo.getPage(),pageVo.getSize());
+        Page<Consumption> orders = orderService.findAll(pageVo.getPage(),pageVo.getSize());
         return ResultUtil.successPageList(orders.getContent(),orders.getTotalPages());
     }
 
     @ApiOperation("保存订单")
     @PostMapping("/save")
-    public BaseResult list(Order order){
-        if(order.getId() == null){
-            order.setCreatedTime(Common.get_current());
-            order.setStatus(1);
+    public BaseResult list(Consumption consumption){
+        if(consumption.getId() == null){
+            consumption.setCreatedTime(Common.get_current());
+            consumption.setStatus(1);
         }
-        orderService.save(order);
+        orderService.save(consumption);
         return ResultUtil.success("修改成功");
     }
 

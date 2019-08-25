@@ -1,7 +1,7 @@
 package com.mingjie.life_server.service.impl;
 
-import com.mingjie.life_server.dao.OrderDao;
-import com.mingjie.life_server.pojo.Order;
+import com.mingjie.life_server.dao.ConsumptionDao;
+import com.mingjie.life_server.pojo.Consumption;
 import com.mingjie.life_server.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,14 +21,14 @@ import java.math.BigDecimal;
 @Service
 public class OrderServiceImpl implements OrderService {
     @Autowired
-    private OrderDao orderDao;
+    private ConsumptionDao consumptionDao;
     @Override
-    public void save(Order order) {
-        orderDao.saveAndFlush(order);
+    public void save(Consumption consumption) {
+        consumptionDao.saveAndFlush(consumption);
     }
 
     @Override
-    public Page<Order> findAll(Integer page, Integer size) {
+    public Page<Consumption> findAll(Integer page, Integer size) {
         Specification specification = new Specification() {
             @Override
             public Predicate toPredicate(Root root, CriteriaQuery criteriaQuery, CriteriaBuilder cb) {
@@ -36,12 +36,12 @@ public class OrderServiceImpl implements OrderService {
             }
         };
         Pageable pageable = new PageRequest(page,size, Sort.Direction.DESC,"id");
-        return orderDao.findAll(specification,pageable);
+        return consumptionDao.findAll(specification,pageable);
     }
 
     @Override
     public BigDecimal priceOut(Integer startTime, Integer endTime) {
-        BigDecimal sum = orderDao.priceOut(startTime, endTime);
+        BigDecimal sum = consumptionDao.priceOut(startTime, endTime);
         if(sum == null)
             sum = new BigDecimal(0);
         return sum;
@@ -50,6 +50,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public void del(int[] ids,Integer status) {
-        orderDao.del(ids,status);
+        consumptionDao.del(ids,status);
     }
 }

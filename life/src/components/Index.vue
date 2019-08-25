@@ -13,30 +13,33 @@
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
-    <el-container direction="horizontal">
+    </el-container>
+    <el-container>
       <el-aside width="200px">
-            <el-menu
-              default-active="1"
-              class="el-menu-vertical-demo"
-              background-color="#545c64"
-              text-color="#fff"
-              router
-              active-text-color="#ffd04b">
-              <el-submenu index="1">
-                <template slot="title">
-                  <i class="el-icon-menu"></i>
-                  <span>个人中心</span>
-                </template>
-                <el-menu-item-group width="180px">
-                  <el-menu-item index="/order">账单列表</el-menu-item>
-                </el-menu-item-group>
-              </el-submenu>
-            </el-menu>
+        <el-menu
+          default-active="1"
+          @open="handleOpen"
+          @close="handleClose"
+          background-color="#545c64"
+          text-color="#fff"
+          active-text-color="#ffd04b"
+          router
+          :collapse="isCollapse"
+        style="width: 100%">
+          <el-submenu index="1">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span>个人中心</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="/order">消费记录</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+        </el-menu>
       </el-aside>
       <el-main>
         <router-view/>
       </el-main>
-   </el-container>
     </el-container>
   </div>
 </template>
@@ -46,11 +49,20 @@
   export default {
     data () {
       return {
+          isCollapse:false,
         admin:{
           name : 'Meigen'
         }
       }
-    }
+    },
+      methods: {
+          handleOpen(key, keyPath) {
+              console.log(key, keyPath);
+          },
+          handleClose(key, keyPath) {
+              console.log(key, keyPath);
+          }
+      }
   }
 </script>
 <style scoped>
@@ -66,7 +78,6 @@
     color: #fff;
   }
   .el-aside{
-    background: #868e96;
     min-height: 800px;
   }
   .el-footer{

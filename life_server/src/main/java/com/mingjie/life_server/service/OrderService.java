@@ -1,15 +1,14 @@
 package com.mingjie.life_server.service;
 
-import com.mingjie.life_server.pojo.Order;
+import com.mingjie.life_server.pojo.Consumption;
 import org.springframework.data.domain.Page;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 public interface OrderService {
-    void save(Order order);
+    void save(Consumption consumption);
 
-    Page<Order> findAll(Integer page, Integer size);
+    Page<Consumption> findAll(Integer page, Integer size);
 
     BigDecimal priceOut(Integer startTime, Integer endTime);
 

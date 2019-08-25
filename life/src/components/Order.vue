@@ -45,31 +45,20 @@
         <span style="line-height: 40px;">支出：{{sumPrice}}</span>
       </el-col>
     </div>
-
     <el-form ref="form" label-width="80px" style="margin-top: 20px" v-show="sh">
       <el-form-item label="id">
         <el-col :span="6">
           <el-input v-model="order.id"></el-input>
         </el-col>
       </el-form-item>
-      <el-form-item label="名称">
+      <el-form-item label="消费金额">
         <el-col :span="6">
-          <el-input v-model="order.name" placeholder="请输入商品名称"></el-input>
+          <el-input v-model="order.fee" placeholder="请输入消费金额"></el-input>
         </el-col>
       </el-form-item>
-      <el-form-item label="总价">
+      <el-form-item label="消费备注">
         <el-col :span="6">
-          <el-input v-model="order.price" placeholder="请输入总价"></el-input>
-        </el-col>
-      </el-form-item>
-      <el-form-item label="数量">
-        <el-col :span="6">
-          <el-input v-model="order.count" placeholder="请输入数量"></el-input>
-        </el-col>
-      </el-form-item>
-      <el-form-item label="标签">
-        <el-col :span="6">
-          <el-input v-model="order.marks" placeholder="请输入标签"></el-input>
+          <el-input v-model="order.marks" placeholder="请输入消费备注"></el-input>
         </el-col>
       </el-form-item>
       <el-form-item label="消费者">
@@ -77,9 +66,24 @@
           <el-input v-model="order.username" placeholder="消费者名称"></el-input>
         </el-col>
       </el-form-item>
+      <el-form-item label="消费时间">
+        <el-col :span="6">
+          <div class="block">
+            <el-date-picker
+              v-model="order.createdTime"
+              type="datetime"
+              placeholder="选择日期时间"
+              align="right"
+              :picker-options="pickerOptions"
+              :default-value="defaultTime"
+            >
+            </el-date-picker>
+          </div>
+        </el-col>
+      </el-form-item>
       <el-form-item>
         <el-button type="success" @click="save">保存</el-button>
-        <el-button type="info" plain @click="sh = false">取消</el-button>
+        <el-button type="info" plain @click="closeSave">取消</el-button>
       </el-form-item>
     </el-form>
     <div v-show="!sh">
@@ -93,21 +97,12 @@
           >
         </el-table-column>
         <el-table-column
-          prop="name"
-          label="名称"
-          >
-        </el-table-column>
-        <el-table-column
-          prop="count"
-          label="数量">
-        </el-table-column>
-        <el-table-column
           prop="marks"
-          label="标签">
+          label="消费备注">
         </el-table-column>
         <el-table-column
-          prop="price"
-          label="总消费">
+          prop="fee"
+          label="消费金额">
         </el-table-column>
         <el-table-column
           prop="username"
@@ -151,12 +146,11 @@
         order:{
           id: '',
           name: '',
-          price: '',
-          count: '1',
+          fee: '',
           marks: '',
           status: 1,
-          createdTime: 1,
-          username:'Meigen'
+          createdTime: '',
+          username:'Mingjie'
         },
         currentPage:1,
         pageSize:10,
@@ -165,9 +159,8 @@
           {
             id: '2016-05-02',
             name: '王小虎',
-            price: '上海市普陀区金沙江路 1518 弄',
-            count:1,
-            username:'Meigen',
+            fee: '上海市普陀区金沙江路 1518 弄',
+            username:'Mingjie',
             createdTime:0,
           }
         ],
@@ -206,22 +199,20 @@
         this.sh = false
         this.order.id = ''
         this.order.name = ''
-        this.order.price = ''
-        this.order.count = '1',
+        this.order.fee = ''
         this.order.marks = '',
         this.order.status = '1',
-        this.order.username = 'Meigen'
+        this.order.username = 'Mingjie'
       },
       save(){
         console.log(this.order)
         this.$axios.post("http://localhost:8080/admin/order/save",this.$qs.stringify({
           id: this.order.id,
           name: this.order.name,
-          price: this.order.price,
-          count: this.order.count,
+          fee: this.order.fee,
           status: this.order.status,
           marks: this.order.marks,
-          createdTime: this.order.createdTime,
+          createdTime: Math.ceil(this.order.createdTime/1000),
           username: this.order.username
         })).then(res =>{
           this.initData()
@@ -254,6 +245,7 @@
       handleClick(row){
         this.sh = true
         this.order = row
+          this.order.createdTime = row.createdTime * 1000;
       },
 
       del(id){
@@ -294,7 +286,11 @@
       },
       myDate(row,column){
         return myformatDate(row.createdTime)
-      }
+      },
+        closeSave(){
+          this.sh = false
+            this.order.createdTime = this.order.createdTime/1000;
+        }
 
     }
   }
